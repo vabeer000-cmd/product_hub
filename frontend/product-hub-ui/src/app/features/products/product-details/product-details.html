@@ -1,0 +1,66 @@
+<h2>Product Details</h2>
+
+@if (loading()) {
+  <p>Loading product...</p>
+}
+@if (notFound()) {
+  <h3>Product Not Found</h3>
+  <p>The product you're looking for does not exist.</p>
+
+  <button
+    type="button"
+    (click)="goBack()">
+    Back to Products
+  </button>
+}
+
+@if (product(); as currentProduct) {
+  <div class="product-details">
+
+    <img
+      [src]="currentProduct.imageUrl"
+      [alt]="currentProduct.name"
+    />
+
+    <div>
+      <h3>{{ currentProduct.name }}</h3>
+
+      <p>{{ currentProduct.description }}</p>
+
+      <p>
+        <strong>Price:</strong>
+        ₹{{ currentProduct.price }}
+      </p>
+
+      <p>
+        <strong>Category:</strong>
+        {{ currentProduct.category }}
+      </p>
+
+      <p>
+        <strong>Status:</strong>
+        {{ currentProduct.available ? 'Available' : 'Unavailable' }}
+      </p>
+
+      <p>
+        <strong>Product ID:</strong>
+        {{ currentProduct.id }}
+      </p>
+
+    </div>
+    <div>
+  <button
+    type="button"
+    (click)="editProduct()">
+    Edit Product
+  </button>
+
+  <button
+    type="button"
+    (click)="goBack()">
+    Back to Products
+  </button>
+</div>
+
+  </div>
+}

@@ -7,9 +7,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class ProductRequest {
+public class ProductUpdateRequest {
 
-	
+
 	public String getName() {
 		return name;
 	}
@@ -68,5 +68,16 @@ public class ProductRequest {
 	@Size(max = 500, message = "Image URL must not exceed 500 characters")
 	private String imageUrl;
 	
-	public ProductRequest() {}
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+	@NotNull(message = "Version is required")
+	private Long version;
+	
+	public ProductUpdateRequest() {}
 }

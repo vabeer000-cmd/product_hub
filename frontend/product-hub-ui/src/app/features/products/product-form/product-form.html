@@ -1,0 +1,61 @@
+<h2>
+  {{ isEditingMode() ? 'Edit Product' : 'Create Product' }}
+</h2>
+@if (errorMessage()) {
+    <p>
+        {{errorMessage()}}
+    </p>
+}
+<form 
+    [formGroup]="productForm"
+    (ngSubmit)="submitForm()">
+    <div>
+        <label for="name">Name</label>
+        <input
+           id = "name"
+           type = "text"
+           formControlName="name"
+           />
+           @if (getFieldError('name')) {
+            <p>{{getFieldError('name')}}</p>
+           }
+
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"></textarea>
+          @if (getFieldError('description')) {
+           <p>{{ getFieldError('description') }}</p>
+              }
+        <label for="price">Price</label>
+        <input
+            id="price"
+            type="number"
+            formControlName="price"/>
+            @if (getFieldError('price')) {
+             <p>{{ getFieldError('price') }}</p>
+              }
+        <label for="category">Category</label>
+        <input
+            id="category"
+            type="text"
+            formControlName="category"/>
+            @if (getFieldError('category')) {
+             <p>{{ getFieldError('category') }}</p>
+                }
+        <label for="imageUrl">Image Url</label>
+        <input 
+            id="imageUrl"
+            type="text"
+            formControlName="imageUrl">
+
+            @if (getFieldError('imageUrl')) {
+                <p>{{ getFieldError('imageUrl') }}</p>
+            }
+    </div>
+
+    <button type="submit">
+  {{ isEditingMode() ? 'Update Product' : 'Create Product' }}
+</button>
+
+</form>

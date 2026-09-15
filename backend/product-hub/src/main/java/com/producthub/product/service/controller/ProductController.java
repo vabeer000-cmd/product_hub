@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.producthub.product.dto.ProductCreateRequest;
 import com.producthub.product.dto.ProductFilter;
-import com.producthub.product.dto.ProductRequest;
 import com.producthub.product.dto.ProductResponse;
+import com.producthub.product.dto.ProductUpdateRequest;
 import com.producthub.product.service.ProductService;
 
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class ProductController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	
-	public ProductResponse createProduct(@Valid @RequestBody ProductRequest request) {
+	public ProductResponse createProduct(@Valid @RequestBody ProductCreateRequest request) {
 		
 		return productService.createProduct(request);
 		
@@ -103,7 +104,7 @@ public class ProductController {
 	   
 	   @PutMapping("/{id}")
 	   public ProductResponse updateProduct(@PathVariable Long id,
-			   								@Valid @RequestBody ProductRequest request) {
+			   								@Valid @RequestBody ProductUpdateRequest  request) {
 		   return productService.updateProduct(id, request);
 		   
 	   }

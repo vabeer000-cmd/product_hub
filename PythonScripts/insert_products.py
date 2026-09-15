@@ -41,7 +41,7 @@ def create_product(index):
         "description": f"Product {index} for ProductHub performance testing",
         "price": round(random.uniform(100, 100000), 2),
         "category": category,
-        "imageUrl": f"https://example.com/products/{index}.jpg"
+        "imageUrl": f"https://d2mtboq75bgsvj.cloudfront.net/images/product-images/68f374dcee3158fd1c20bfa9/hellofi-default-a918966a-ae97-402e-82e5-1eca8b8f0cec_lg.webp"
     }
 
     response = requests.post(

@@ -1,7 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product.model';
+import { Product, ProductPage } from '../models/product.model';
+import { ProductCreateRequest } from '../models/product-create-request';
+import { ProductUpdateRequest } from '../models/product-update-request.model';
+import { environment } from '../../../environments/environment';
 
 // @Injectable() tells Angular:
 
@@ -31,8 +34,85 @@ export class ProductService {
     private http: HttpClient
   ){}
 
-  getProducts():Observable<Product[]>{
 
-    return this.http.get<Product[]>('http://localhost:8080/api/products');
+
+getProducts(
+  page: number,
+  size: number,
+  search?: string,
+  category?: string,
+  available?: boolean,
+  minPrice?: number,
+  maxPrice?: number
+): Observable<ProductPage> {
+
+  let params = new HttpParams()
+    .set('page', page)
+    .set('size', size);
+
+  if (search) {
+    params = params.set('search', search);
   }
+
+  if (category) {
+    params = params.set('category', category);
+  }
+
+  if (available !== undefined) {
+    params = params.set('available', available);
+  }
+
+  if (minPrice !== undefined) {
+    params = params.set('minPrice', minPrice);
+  }
+
+  if (maxPrice !== undefined) {
+    params = params.set('maxPrice', maxPrice);
+  }
+
+  // return this.http.get<ProductPage>(
+  //   'http://localhost:8082/api/products',
+  //   { params }
+  const url = `${environment.apiUrl}/products`;
+
+console.log(
+  'REQUEST URL:',
+  `${url}?${params.toString()}`
+);
+
+return this.http.get<ProductPage>(
+  url,
+  { params }
+  );
+}
+
+createProduct(product: ProductCreateRequest): Observable<Product>{
+  return this.http.post<Product>(
+   `${environment.apiUrl}/products`,
+   product
+  );
+}
+
+getProductById(id: number): Observable<Product>{
+  return this.http.get<Product>(
+      `${environment.apiUrl}/products/${id}`
+  )
+}
+
+updateProduct(
+  id: number,
+  product: ProductUpdateRequest
+): Observable<Product>{
+  return this.http.put<Product>(
+    `${environment.apiUrl}/products/${id}`,
+     product
+  )
+
+}
+
+deleteProduct(id: number): Observable<void> {
+  return this.http.delete<void>(
+    `http://localhost:8082/api/products/${id}`
+  );
+}
 }

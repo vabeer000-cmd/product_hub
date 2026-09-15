@@ -1,5 +1,7 @@
 package com.producthub.config.RedisConfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.stereotype.Component;
@@ -7,15 +9,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisCacheErrorHandler implements CacheErrorHandler {
 
+    private static final Logger log =
+            LoggerFactory.getLogger(RedisCacheErrorHandler.class);
+
     @Override
     public void handleCacheGetError(
             RuntimeException exception,
             Cache cache,
             Object key) {
 
-        System.out.println(
-                "Redis GET failed for key: " + key +
-                ". Continuing without cache."
+        log.warn(
+                "Redis GET failed for key: {}. Continuing without cache.",
+                key,
+                exception
         );
     }
 
@@ -26,9 +32,10 @@ public class RedisCacheErrorHandler implements CacheErrorHandler {
             Object key,
             Object value) {
 
-        System.out.println(
-                "Redis PUT failed for key: " + key +
-                ". Continuing without cache."
+        log.warn(
+                "Redis PUT failed for key: {}. Continuing without cache.",
+                key,
+                exception
         );
     }
 
@@ -38,9 +45,10 @@ public class RedisCacheErrorHandler implements CacheErrorHandler {
             Cache cache,
             Object key) {
 
-        System.out.println(
-                "Redis EVICT failed for key: " + key +
-                ". Continuing without cache."
+        log.warn(
+                "Redis EVICT failed for key: {}. Continuing without cache.",
+                key,
+                exception
         );
     }
 
@@ -49,8 +57,9 @@ public class RedisCacheErrorHandler implements CacheErrorHandler {
             RuntimeException exception,
             Cache cache) {
 
-        System.out.println(
-                "Redis CLEAR failed. Continuing without cache."
+        log.warn(
+                "Redis CLEAR failed. Continuing without cache.",
+                exception
         );
     }
 }
