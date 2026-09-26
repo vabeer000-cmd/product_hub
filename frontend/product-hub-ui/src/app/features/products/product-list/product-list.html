@@ -1,11 +1,115 @@
 <h2>Products List</h2>
-<h2>Product List Component Loaded</h2>
-<!-- <div>
-    @for(product of products; track product.id){
-        <div>
-            <h3>{{product.name}}</h3>
-            <p>{{product.description}} </p>
-            <p>₹{{ product.price }}</p>
-        </div>
-    }
-</div> -->
+<button
+  type="button"
+  (click)="createProduct()">
+  Create Product
+</button>
+<div class="filters">
+
+  <input
+    type="text"
+    placeholder="Search products..."
+    [(ngModel)]="search"
+  />
+
+  <input
+    type="text"
+    placeholder="Category"
+    [(ngModel)]="category"
+  />
+
+  <select [(ngModel)]="available">
+    <option [ngValue]="undefined">All</option>
+    <option [ngValue]="true">Available</option>
+    <option [ngValue]="false">Unavailable</option>
+  </select>
+
+  <input
+    type="number"
+    placeholder="Min price"
+    [(ngModel)]="minPrice"
+  />
+
+  <input
+    type="number"
+    placeholder="Max price"
+    [(ngModel)]="maxPrice"
+  />
+  
+<button
+  type="button"
+  (click)="applyFilters()"
+  [disabled]="loading()">
+  Apply
+</button>
+
+  <button (click)="clearFilters()">
+    Clear
+  </button>
+
+</div>
+
+
+@if (loading()) {
+  <p>Loading products...</p>
+}
+@if (!loading() && products().length === 0) {
+  <p>No products found.</p>
+}
+<div class="product-grid">
+  @for (product of products(); track product.id) {
+    <div class="product-card">
+      <img
+        [src]="product.imageUrl"
+        [alt]="product.name"
+        width="150" />
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.description }}</p>
+      <p>₹{{ product.price }}</p>
+      <p>Category: {{ product.category }}</p>
+      <p>
+        Status:
+        {{ product.available ? 'Available' : 'Unavailable' }}
+      </p>
+      <button
+  type="button"
+  (click)="viewProduct(product.id)">
+  View
+</button>
+      <button type="button"
+              (click)="editProduct(product.id)">
+        Edit
+
+        </button>
+
+        <button
+          type="button"
+          (click)="deleteProduct(product.id)">
+          Delete
+        </button>
+    </div>
+  }
+</div>
+
+@if (!loading() && products().length > 0) {
+
+  <div class="pagination">
+
+  <button
+    (click)="previousPage()"
+    [disabled]="currentPage() === 0">
+    Previous
+  </button>
+
+  <span>
+    Page {{ currentPage() + 1 }} of {{ totalPages() }}
+  </span>
+
+  <button
+    (click)="nextPage()"
+    [disabled]="currentPage() >= totalPages() - 1">
+    Next
+  </button>
+
+</div>
+}

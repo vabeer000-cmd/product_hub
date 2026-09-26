@@ -9,4 +9,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('product-hub-ui');
+
+  a : number =10;
+
+  constructor(){
+  console.log("Number : ",this.a);
+  }
+
+  
 }

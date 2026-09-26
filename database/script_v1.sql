@@ -15,5 +15,9 @@ CREATE TABLE products (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
+CREATE INDEX idx_product_created_id
+ON products (created_at DESC, id DESC);
 describe products;
+
+CREATE INDEX idx_product_price_created_id
+ON products (price, created_at DESC, id DESC);
