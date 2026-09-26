@@ -5,6 +5,7 @@ import { Product, ProductPage } from '../models/product.model';
 import { ProductCreateRequest } from '../models/product-create-request';
 import { ProductUpdateRequest } from '../models/product-update-request.model';
 import { environment } from '../../../environments/environment';
+import { ProductCursorResponse } from '../models/product-cursor-response';
 
 // @Injectable() tells Angular:
 
@@ -112,7 +113,54 @@ updateProduct(
 
 deleteProduct(id: number): Observable<void> {
   return this.http.delete<void>(
-    `http://localhost:8082/api/products/${id}`
+    `{environment.apiUrl}/products/${id}`
+  );
+}
+
+
+getProductsByCursor(
+  limit: number = 20,
+  cursor?: string,
+  search?: string,
+  category?: string,
+  available?: boolean,
+  minPrice?: number,
+  maxPrice?: number
+) {
+  let params: any = {
+    limit: limit
+  };
+
+  if (cursor) {
+    params.cursor = cursor;
+  }
+
+  if (search) {
+    params.search = search;
+  }
+
+  if (category) {
+    params.category = category;
+  }
+
+  if (available !== undefined) {
+    params.available = available;
+  }
+if (minPrice != null) {
+  params.minPrice = minPrice;
+}
+
+if (maxPrice != null) {
+  params.maxPrice = maxPrice;
+}
+
+  const url = `${environment.apiUrl}/products/cursor`;
+
+  console.log('Cursor API URL:', `${url}?${new URLSearchParams(params)}`);
+
+  return this.http.get<ProductCursorResponse>(
+    url,
+    { params }
   );
 }
 }

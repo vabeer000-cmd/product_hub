@@ -1,0 +1,78 @@
+<div class="cursor-container">
+
+  <h2>Products - Cursor Pagination</h2>
+
+  <div class="filters">
+
+  <input
+    type="text"
+    placeholder="Search products..."
+    [(ngModel)]="search"
+  />
+
+  <input
+    type="text"
+    placeholder="Category"
+    [(ngModel)]="category"
+  />
+
+  <select [(ngModel)]="available">
+    <option [ngValue]="undefined">All</option>
+    <option [ngValue]="true">Available</option>
+    <option [ngValue]="false">Unavailable</option>
+  </select>
+
+  <input
+    type="number"
+    placeholder="Min price"
+    [(ngModel)]="minPrice"
+  />
+
+  <input
+    type="number"
+    placeholder="Max price"
+    [(ngModel)]="maxPrice"
+  />
+
+  <button type="button" (click)="applyFilters()">
+    Apply
+  </button>
+
+  <button type="button" (click)="clearFilters()">
+    Clear
+  </button>
+
+</div>
+  <div class="product-grid">
+
+    @for (product of products(); track product.id) {
+      <div class="product-card">
+       <img
+        [src]="product.imageUrl"
+        [alt]="product.name"
+        width="150" />
+        <h3>{{ product.name }}</h3>
+
+        <p>{{ product.description }}</p>
+
+        <p><strong>₹{{ product.price }}</strong></p>
+
+        <p>Category: {{ product.category }}</p>
+
+        <p>
+          Available:
+          {{ product.available ? 'Yes' : 'No' }}
+        </p>
+
+      </div>
+    }
+
+  </div>
+
+  @if (hasNext()) {
+    <button (click)="loadMore()">
+      Load More
+    </button>
+  }
+
+</div>

@@ -129,5 +129,25 @@ public class GlobalExceptionHandler {
 	    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 	            .body(response);
 	}
+	
+	@ExceptionHandler(InvalidCursorException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidCursor(
+				InvalidCursorException ex,
+				HttpServletRequest request){
+		
+		log.warn("Invalid cursor. path: {}",request.getRequestURI());
+		
+		ErrorResponse error = new ErrorResponse(
+				LocalDateTime.now(), 
+				HttpStatus.BAD_REQUEST.value(),
+				"Invalid Cursor", 
+				ex.getMessage(), 
+				request.getRequestURI(),
+				null);
+		
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(error);
+	}
 
 }

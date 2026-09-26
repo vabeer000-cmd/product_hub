@@ -16,8 +16,16 @@ export const routes: Routes = [
         path: 'products/edit/:id',
         component: ProductForm
     },
+     {
+     path: 'products/cursor',
+     loadComponent: () =>
+       import('./features/products/product-cursor-list/product-cursor-list')
+      .then(m => m.ProductCursorList)
+    },
     {
          path: 'products/:id',
          component: ProductDetails
-    }
+    },
+
+   
 ];

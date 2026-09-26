@@ -1,6 +1,7 @@
 package com.producthub.product.service.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,12 +20,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.producthub.product.dto.ProductCreateRequest;
+import com.producthub.product.dto.ProductCursorResponse;
 import com.producthub.product.dto.ProductFilter;
 import com.producthub.product.dto.ProductResponse;
 import com.producthub.product.dto.ProductUpdateRequest;
 import com.producthub.product.service.ProductService;
 
 import jakarta.validation.Valid;
+
+//URL = resource
+//HTTP method = operation
 
 @RestController
 @RequestMapping("/api/products")
@@ -45,23 +50,7 @@ public class ProductController {
 		
 	}
 	
-//	   @GetMapping
-//	    public Page<ProductResponse> getAllProducts(  
-//	    		  @RequestParam(required = false) String category,
-//	    		  @RequestParam(required = false) Boolean available,
-//	    		  Pageable pageable) {
-//		   
-//		   if (pageable.getSort().isUnsorted()) {
-//		        pageable = PageRequest.of(
-//		                pageable.getPageNumber(),
-//		                pageable.getPageSize(),
-//		                Sort.by(Sort.Direction.DESC, "createdAt")
-//		        );
-//		    }
-//
-//	        return productService.getAllProducts(category,available, pageable);
-//	    }
-//	   
+
 	
 	@GetMapping
 	public Page<ProductResponse> getAllProducts(
@@ -116,4 +105,25 @@ public class ProductController {
 		   productService.deleteProduct(id);
 		   
 	   }
+	   
+	   @GetMapping("/cursor")
+	   public ProductCursorResponse getProductsByCursor(
+	           @RequestParam(defaultValue = "20") Integer limit,
+	           @RequestParam(required = false) String cursor,
+	           @RequestParam(required = false) String category,
+	           @RequestParam(required = false) Boolean available,
+	           @RequestParam(required = false) BigDecimal minPrice,
+	           @RequestParam(required = false) BigDecimal maxPrice,
+	           @RequestParam(required = false) String search) {
+
+	       return productService.getProductsByCursor(
+	               limit,
+	               cursor,
+	               category,
+	               available,
+	               minPrice,
+	               maxPrice,
+	               search
+	       );
+	   }	  
 }
