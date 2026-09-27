@@ -1,8 +1,10 @@
-import { Component, OnInit,signal } from '@angular/core';
+import { Component, inject, OnInit,signal } from '@angular/core';
 import { Product } from '../../../core/models/product.model';
 import { ProductService } from '../../../core/services/product';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { Auth } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-product-list',
@@ -15,6 +17,7 @@ export class ProductList implements OnInit{
 // products: Product[] = [];
 products = signal<Product[]>([]);
   loading = signal(false);
+  private auth = inject(Auth);
 constructor(private productService: ProductService,
             private router: Router
 ){}
@@ -141,6 +144,36 @@ deleteProduct(id: number): void {
     },
     error: (error) => {
       console.error('Failed to delete product', error);
+    }
+  });
+}
+
+testConcurrentRequests(): void {
+
+  forkJoin([
+    this.productService.getProducts(0, 10),
+    this.productService.getProducts(1, 10),
+    this.productService.getProducts(2, 10),
+    this.productService.getProducts(3, 10),
+    this.productService.getProducts(4, 10)
+  ]).subscribe({
+    next: responses => {
+      console.log('All requests completed', responses);
+    },
+    error: error => {
+      console.error('Request failed', error);
+    }
+  });
+
+}
+
+logout(): void {
+  this.auth.logout().subscribe({
+    next: () => {
+      this.router.navigate(['/login']);
+    },
+    error: error => {
+      console.error('Logout failed', error);
     }
   });
 }

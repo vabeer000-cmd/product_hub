@@ -1,13 +1,13 @@
-package com.producthub.product.service.controller;
+package com.producthub.product.controller;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +42,7 @@ public class ProductController {
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	@ResponseStatus(HttpStatus.CREATED)
 	
 	public ProductResponse createProduct(@Valid @RequestBody ProductCreateRequest request) {
@@ -53,6 +54,7 @@ public class ProductController {
 
 	
 	@GetMapping
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public Page<ProductResponse> getAllProducts(
 	        @RequestParam(required = false) String category,
 	        @RequestParam(required = false) Boolean available,
@@ -86,12 +88,14 @@ public class ProductController {
 	    );
 	}
 	   @GetMapping("/{id}")
+	   @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	   public ProductResponse getProductById(@PathVariable Long id) {
 
 	       return productService.getProductById(id);
 	   }
 	   
 	   @PutMapping("/{id}")
+	   @PreAuthorize("hasRole('ADMIN')")
 	   public ProductResponse updateProduct(@PathVariable Long id,
 			   								@Valid @RequestBody ProductUpdateRequest  request) {
 		   return productService.updateProduct(id, request);
@@ -99,6 +103,7 @@ public class ProductController {
 	   }
 	   
 	   @DeleteMapping("/{id}")
+	   @PreAuthorize("hasRole('ADMIN')")
 	   @ResponseStatus(HttpStatus.NO_CONTENT)
 	   public void deleteProduct(@PathVariable Long id) {
 		   
@@ -107,6 +112,7 @@ public class ProductController {
 	   }
 	   
 	   @GetMapping("/cursor")
+	   @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	   public ProductCursorResponse getProductsByCursor(
 	           @RequestParam(defaultValue = "20") Integer limit,
 	           @RequestParam(required = false) String cursor,

@@ -1,4 +1,4 @@
-package com.producthub.product.common.exception;
+package com.producthub.common.exception;
 
 public class ProductNotFoundException extends RuntimeException {
 

@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
-import com.producthub.product.common.exception.InvalidCursorException;
+import com.producthub.common.exception.InvalidCursorException;
 import com.producthub.product.dto.ProductCursor;
 
 public final class CursorUtils {

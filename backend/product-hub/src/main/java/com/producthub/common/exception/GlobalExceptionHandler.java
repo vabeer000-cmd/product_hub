@@ -1,4 +1,4 @@
-package com.producthub.product.common.exception;
+package com.producthub.common.exception;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -150,4 +151,95 @@ public class GlobalExceptionHandler {
 				.body(error);
 	}
 
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidCredentials(
+	        InvalidCredentialsException ex,
+	        HttpServletRequest request) {
+
+	    log.warn(
+	        "Invalid login attempt for path: {}",
+	        request.getRequestURI()
+	    );
+
+	    ErrorResponse response = new ErrorResponse(
+	        LocalDateTime.now(),
+	        HttpStatus.UNAUTHORIZED.value(),
+	        "Unauthorized",
+	        ex.getMessage(),
+	        request.getRequestURI(),
+	        null
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.UNAUTHORIZED)
+	            .body(response);
+	}
+	
+	@ExceptionHandler(AuthorizationDeniedException.class)
+	public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(
+	        AuthorizationDeniedException exception,
+	        HttpServletRequest request) {
+
+	    log.warn(
+	            "Access denied. Path: {}, Message: {}",
+	            request.getRequestURI(),
+	            exception.getMessage()
+	    );
+
+	    ErrorResponse response = new ErrorResponse(
+	            LocalDateTime.now(),
+	            HttpStatus.FORBIDDEN.value(),
+	            "Forbidden",
+	            "You do not have permission to access this resource",
+	            request.getRequestURI(),
+	            null
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.FORBIDDEN)
+	            .body(response);
+	}
+	
+	@ExceptionHandler(InvalidRefreshTokenException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidRefreshTokenException(
+	        InvalidRefreshTokenException exception,
+	        HttpServletRequest request) {
+
+	    ErrorResponse errorResponse = new ErrorResponse(
+	            LocalDateTime.now(),
+	            HttpStatus.UNAUTHORIZED.value(),
+	            "Unauthorized",
+	            "Invalid or expired refresh token",
+	            request.getRequestURI(),
+	            null
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.UNAUTHORIZED)
+	            .body(errorResponse);
+	}
+	
+	@ExceptionHandler(UsernameAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleUsernameAlreadyExists(
+	        UsernameAlreadyExistsException ex,
+	        HttpServletRequest request) {
+
+	    log.warn(
+	        "Registration failed: username already exists, path: {}",
+	        request.getRequestURI()
+	    );
+
+	    ErrorResponse response = new ErrorResponse(
+	        LocalDateTime.now(),
+	        HttpStatus.CONFLICT.value(),
+	        "Conflict",
+	        ex.getMessage(),
+	        request.getRequestURI(),
+	        null
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.CONFLICT)
+	            .body(response);
+	}
 }
