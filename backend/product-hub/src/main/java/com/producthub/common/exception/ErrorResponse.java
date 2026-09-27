@@ -1,4 +1,4 @@
-package com.producthub.product.common.exception;
+package com.producthub.common.exception;
 
 import java.time.LocalDateTime;
 import java.util.Map;

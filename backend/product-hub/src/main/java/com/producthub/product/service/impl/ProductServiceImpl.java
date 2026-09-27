@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.producthub.product.common.exception.ProductNotFoundException;
+import com.producthub.common.exception.ProductNotFoundException;
 import com.producthub.product.common.specification.ProductSpecification;
 import com.producthub.product.dto.ProductCreateRequest;
 import com.producthub.product.dto.ProductCursor;

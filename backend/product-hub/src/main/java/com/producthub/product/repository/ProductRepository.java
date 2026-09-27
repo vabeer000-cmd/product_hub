@@ -14,20 +14,6 @@ import com.producthub.product.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-//	@Query("""
-//			SELECT p
-//			FROM Product p
-//			WHERE
-//			    p.createdAt < :afterCreatedAt
-//			    OR (
-//			        p.createdAt = :afterCreatedAt
-//			        AND p.id < :afterId
-//			    )
-//			ORDER BY p.createdAt DESC, p.id DESC
-//			""")
-//	List<Product> findNextProducts(@Param("afterCreatedAt") LocalDateTime afterCreatedAt,
-//			@Param("afterId") Long afterId, Pageable pageable);
-
 
 	@Query("""
 		    SELECT p

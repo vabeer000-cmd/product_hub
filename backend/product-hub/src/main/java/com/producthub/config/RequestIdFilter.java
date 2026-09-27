@@ -1,4 +1,4 @@
-package com.producthub.config.config;
+package com.producthub.config;
 
 import java.io.IOException;
 import java.util.UUID;
