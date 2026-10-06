@@ -113,7 +113,7 @@ updateProduct(
 
 deleteProduct(id: number): Observable<void> {
   return this.http.delete<void>(
-    `{environment.apiUrl}/products/${id}`
+    `${environment.apiUrl}/products/${id}`
   );
 }
 
