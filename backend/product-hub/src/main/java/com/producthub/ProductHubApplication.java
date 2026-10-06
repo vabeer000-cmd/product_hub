@@ -12,7 +12,6 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerial
 import com.producthub.product.util.CursorUtils;
 
 @EnableCaching
-@EnableJpaAuditing
 @EnableSpringDataWebSupport(pageSerializationMode = PageSerializationMode.VIA_DTO)
 @SpringBootApplication
 public class ProductHubApplication {

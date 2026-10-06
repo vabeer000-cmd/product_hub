@@ -43,3 +43,22 @@ CREATE TABLE refresh_tokens (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+
+-- default admin , user name is admin and password is Password@123
+INSERT INTO users (
+    username,
+    password,
+    role,
+    created_at,
+    updated_at
+)
+VALUES (
+    'admin',
+    '$10$dBLMV2G5Wu3LVnVX0o.Ij.abfARwgaUcvliqD0GKEFgKKKcgQKOw.',
+    'ADMIN',
+    NOW(),
+    NOW()
+);
+
+ALTER TABLE products
+ADD COLUMN version BIGINT NOT NULL DEFAULT 0;
